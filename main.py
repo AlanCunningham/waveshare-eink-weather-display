@@ -49,6 +49,7 @@ def main():
     # Hourly temperature graph
     # The graph takes up a lot of space, so we draw this first so other text
     # and images can be drawn on top of it.
+    # Convert 200x200 svg images to png, resized to around 100x100.
     hourly_weather = weather_data["hourly"]["data"]
     number_of_hours = 12
     temperature_list = []
@@ -92,8 +93,11 @@ def main():
     # Weather icon
     image_dir = "climacons"
     current_weather_icon = current_weather["icon"]
-    weather_icon = Image.open(f"{image_dir}/rain.png")
-    Himage.paste(weather_icon, (today_weather_icon_x, weather_icon_y))
+    try:
+        weather_icon = Image.open(f"{image_dir}/{current_weather_icon}.png")
+        Himage.paste(weather_icon, (today_weather_icon_x, weather_icon_y))
+    except Exception:
+        draw.text((today_weather_icon_x, weather_icon_y), f"Image {current_weather_icon} not found", font=normal)
     # Current Temperature
     current_temperature = str(int(round(current_weather["apparentTemperature"])))
     draw.text((current_temperature_x, current_temperature_y), f"{current_temperature}°", font=large)
