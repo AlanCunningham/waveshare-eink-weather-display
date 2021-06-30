@@ -67,52 +67,49 @@ def main():
     Himage.paste(temperature_graph, (10, 260))
 
     # Relative co-ordinates
-    day_title_x = 90
+    # Left column
+    left_column_x = 90
     day_title_y = 50
+    today_weather_icon_x = 120
     weather_icon_y = 115
-    temperature_y = 210
+    today_temperature_x = left_column_x + 130
+    temperature_y = 115
+    # Right column
+    right_column_x = 450
+    tomorrow_weather_icon_x = right_column_x + 30
+    tomorrow_temperature_x = right_column_x + 135
+    # Summary
+    summary_x = left_column_x
+    summary_y = 220
 
     # Today's date
     now = datetime.now()
-    date_format = now.strftime("%a %d %b")
-    draw.text((day_title_x, day_title_y), f"{date_format}", font=normal)
+    todays_date = now.strftime("%a %d %b")
+    draw.text((left_column_x, day_title_y), todays_date, font=normal)
     # Today's weather
     image_dir = "climacons"
     current_weather_icon = current_weather["icon"]
     weather_icon = Image.open(f"{image_dir}/rain.png")
-    Himage.paste(weather_icon, (120, weather_icon_y))
+    Himage.paste(weather_icon, (today_weather_icon_x, weather_icon_y))
     # Temperature
     rounded_current_temperature = str(int(round(current_weather["apparentTemperature"])))
-    draw.text((145, temperature_y), f"{rounded_current_temperature}°", font=normal)
+    draw.text((today_temperature_x, temperature_y), f"{rounded_current_temperature}°", font=normal)
     # Weather summary
-    # draw.text((90, 275), current_weather["summary"], font=normal)
-
-    # Daily weather
-    daily_weather = weather_data["daily"]["data"]
-    tomorrow = daily_weather[1]
-    overmorrow = daily_weather[2]
+    draw.text((summary_x, summary_y),  weather_data["hourly"]["summary"], font=normal)
 
     # Tomorrow's weather
+    daily_weather = weather_data["daily"]["data"]
+    tomorrow = daily_weather[1]
     tomorrow_day_name = datetime.fromtimestamp(tomorrow["time"]).strftime("%a")
-    draw.text((400, day_title_y), tomorrow_day_name, font=normal)
+    draw.text((right_column_x, day_title_y), "Tomorrow", font=normal)
     tomorrow_weather_icon = tomorrow["icon"]
     weather_icon = Image.open(f"{image_dir}/rain.png")
-    Himage.paste(weather_icon, (400, weather_icon_y))
+    Himage.paste(weather_icon, (tomorrow_weather_icon_x, weather_icon_y))
     # Temperature
-    average_temperature = tomorrow["apparentTemperatureHigh"] + tomorrow["apparentTemperatureLow"] / 2
+    average_temperature = tomorrow["apparentTemperatureHigh"]
     rounded_tomorrow_temperature = str(int(round(average_temperature)))
-    draw.text((420, temperature_y), f"{rounded_tomorrow_temperature}°", font=normal)
+    draw.text((tomorrow_temperature_x, temperature_y), f"{rounded_tomorrow_temperature}°", font=normal)
 
-    # Overmorrow's weather
-    overmorrow_day_name = datetime.fromtimestamp(overmorrow["time"]).strftime("%a")
-    draw.text((620, day_title_y), overmorrow_day_name, font=normal)
-    overmorrow_weather_icon = overmorrow["icon"]
-    weather_icon = Image.open(f"{image_dir}/rain.png")
-    Himage.paste(weather_icon, (600, weather_icon_y))
-    # Temperature
-    average_temperature = overmorrow["apparentTemperatureHigh"] + overmorrow["apparentTemperatureLow"] / 2
-    rounded_overmorrow_temperature = str(int(round(average_temperature)))
-    draw.text((620, temperature_y), f"{rounded_overmorrow_temperature}°", font=normal)
 
     # Display the buffer to the eink screen
     print("Displaying image")
