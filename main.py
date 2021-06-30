@@ -46,7 +46,7 @@ def main():
     Himage = Image.new("1", (epd.width, epd.height), 255)
     draw = ImageDraw.Draw(Himage)
 
-    # Hourly temperature
+    # Hourly temperature graph
     # The graph takes up a lot of space, so we draw this first so other text
     # and images can be drawn on top of it.
     hourly_weather = weather_data["hourly"]["data"]
@@ -61,13 +61,13 @@ def main():
         hour_list.append(converted_time)
     # Plot the graph, save it as an image and add to the eink buffer
     plt.figure(figsize=(8, 2))
+    plt.grid()
     plt.plot(hour_list, temperature_list, linewidth=3.0)
     plt.savefig("temperature_graph.png")
     temperature_graph = Image.open(f"temperature_graph.png")
     Himage.paste(temperature_graph, (10, 260))
 
     # Relative co-ordinates
-    # Left column
     max_left = 90
     max_right = 700
     left_column_x = 90
@@ -78,10 +78,6 @@ def main():
     current_temperature_y = 120
     rain_chance_x = max_left + 30
     rain_chance_y = 120
-    # Right column
-    right_column_x = 450
-    tomorrow_weather_icon_x = right_column_x + 30
-    tomorrow_temperature_x = right_column_x + 135
     # Summary
     summary_x = left_column_x
     summary_y = 220
