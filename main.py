@@ -54,16 +54,23 @@ def main():
     number_of_hours = 12
     temperature_list = []
     hour_list = []
+    rain_chance_list = []
     for index, hour in enumerate(hourly_weather):
         if index == number_of_hours:
             break
         temperature_list.append(hour["apparentTemperature"])
         converted_time = datetime.fromtimestamp(hour["time"]).strftime("%H:%M")
         hour_list.append(converted_time)
+        rain_chance_list.append(hour["precipProbability"] * 10)
     # Plot the graph, save it as an image and add to the eink buffer
+    fig, ax1 = plt.subplots()
     plt.figure(figsize=(8, 2))
+    ax1.plot(hour_list, temperature_list)
+    ax2 = ax1.twinx()
+    ax2.plot(hour_list, rain_chance_list)
     plt.grid()
     plt.plot(hour_list, temperature_list, linewidth=3.0)
+    plt.plot(hour_list, rain_chance_list, "--", linewidth=3.0)
     plt.savefig("temperature_graph.png")
     temperature_graph = Image.open(f"temperature_graph.png")
     Himage.paste(temperature_graph, (10, 260))
