@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 from PIL import Image,ImageDraw,ImageFont
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 
 def get_weather():
@@ -24,32 +25,60 @@ def get_weather():
     return weather_data
 
 
+def draw_underlined_text(draw, pos, text, font, **options):
+    """
+    Draw text with a horizontal line underneath.
+    See https://stackoverflow.com/questions/3777861/setting-y-axis-limit-in-matplotlib
+    """
+    twidth, theight = draw.textsize(text, font=font)
+    lx, ly = pos[0], pos[1] + theight
+    draw.text(pos, text, font=font, **options)
+    padding_top = 5
+    draw.line((lx, ly + padding_top, lx + twidth, ly + padding_top), **options)
+
+
 def main():
     weather_data = get_weather().json()
-    # weather_data = {
-    #     "currently": {
-    #         "icon": "rain",
-    #         "summary": "Overcast",
-    #         "apparentTemperature": 18,
-    #     }
-    # }
     current_weather = weather_data["currently"]
     # Initialise and clear the e-ink screen
     print("Initialising screen")
     epd = epd7in5_V2.EPD()
     epd.init()
-    print("Clearing screen")
-    epd.Clear()
 
     normal = ImageFont.truetype("Font.ttc", 40)
     large = ImageFont.truetype("Font.ttc", 64)
     Himage = Image.new("1", (epd.width, epd.height), 255)
     draw = ImageDraw.Draw(Himage)
 
-    # Hourly temperature graph
-    # The graph takes up a lot of space, so we draw this first so other text
+    # Layout
+    max_left = 90
+    max_right = 700
+    left_column_x = 90
+    todays_day_name_x = 90
+    todays_day_name_y = 50
+    todays_date_x = 90
+    todays_date_y = 50
+    weather_icon_x = int(max_right / 2)
+    weather_icon_y = 115
+    current_temperature_x = max_right - 100
+    current_temperature_y = 120
+    rain_chance_x = max_left + 30
+    rain_chance_y = 120
+    # Summary
+    summary_x = left_column_x
+    summary_y = 220
+    # Temperature graph
+    temperature_graph_x = 400
+    temperature_graph_y = 260
+    rain_graph_x = 60
+    rain_graph_y = 260
+    # Height and width of both graphs in inches
+    graphs_width = 3.5
+    graphs_height = 2
+
+    # The graphs takes up a lot of space, so we draw this first so other text
     # and images can be drawn on top of it.
-    # Convert 200x200 svg images to png, resized to around 100x100.
+    # Hourly temperature graph
     hourly_weather = weather_data["hourly"]["data"]
     number_of_hours = 12
     temperature_list = []
@@ -59,59 +88,55 @@ def main():
         if index == number_of_hours:
             break
         temperature_list.append(hour["apparentTemperature"])
-        converted_time = datetime.fromtimestamp(hour["time"]).strftime("%H:%M")
+        converted_time = datetime.fromtimestamp(hour["time"]).strftime("%H")
         hour_list.append(converted_time)
-        rain_chance_list.append(hour["precipProbability"] * 10)
+        rain_chance_list.append(hour["precipProbability"] * 100)
+        print(f"{hour}: {hour['precipProbability']}")
     # Plot the graph, save it as an image and add to the eink buffer
-    fig, ax1 = plt.subplots()
-    plt.figure(figsize=(8, 2))
-    ax1.plot(hour_list, temperature_list)
-    ax2 = ax1.twinx()
-    ax2.plot(hour_list, rain_chance_list)
+    plt.figure(figsize=(graphs_width, graphs_height))
+    plt.grid()
+    plt.ylim(0, 100)
+    plt.plot(hour_list, rain_chance_list, linewidth=3.0)
+    plt.savefig("rain_graph.png")
+
+    plt.figure(figsize=(graphs_width, graphs_height))
     plt.grid()
     plt.plot(hour_list, temperature_list, linewidth=3.0)
-    plt.plot(hour_list, rain_chance_list, "--", linewidth=3.0)
     plt.savefig("temperature_graph.png")
-    temperature_graph = Image.open(f"temperature_graph.png")
-    Himage.paste(temperature_graph, (10, 260))
 
-    # Relative co-ordinates
-    max_left = 90
-    max_right = 700
-    left_column_x = 90
-    day_title_y = 50
-    today_weather_icon_x = int(max_right / 2)
-    weather_icon_y = 115
-    current_temperature_x = max_right - 100
-    current_temperature_y = 120
-    rain_chance_x = max_left + 30
-    rain_chance_y = 120
-    # Summary
-    summary_x = left_column_x
-    summary_y = 220
+    temperature_graph = Image.open("temperature_graph.png")
+    rain_graph = Image.open("rain_graph.png")
+    Himage.paste(temperature_graph, (temperature_graph_x, temperature_graph_y))
+    Himage.paste(rain_graph, (rain_graph_x, rain_graph_y))
 
     # Today's date
     now = datetime.now()
+    todays_day_name = now.strftime("%A")
     todays_date = now.strftime("%A %d %B")
-    draw.text((left_column_x, day_title_y), todays_date, font=normal)
+    # draw.text((todays_day_name_x, todays_day_name_y), todays_day_name, font=normal)
+    draw_underlined_text(draw, (todays_date_x, todays_date_y), todays_date, font=normal, width=4)
+    # draw.text((todays_date_x, todays_date_y), todays_date, font=normal)
     # Chance of rain
-    rain_chance = int(current_weather["precipProbability"] * 10)
+    rain_chance = current_weather["precipProbability"] * 100
+    print(f"Rain chance: {current_weather['precipProbability']}")
     draw.text((rain_chance_x, rain_chance_y), f"{rain_chance}%", font=large)
     # Weather icon
+    # Convert 200x200 svg images to png, resized to around 100x100.
     image_dir = "climacons"
     current_weather_icon = current_weather["icon"]
     try:
         weather_icon = Image.open(f"{image_dir}/{current_weather_icon}.png")
-        Himage.paste(weather_icon, (today_weather_icon_x, weather_icon_y))
+        Himage.paste(weather_icon, (weather_icon_x, weather_icon_y))
     except Exception:
-        draw.text((today_weather_icon_x, weather_icon_y), f"Image {current_weather_icon} not found", font=normal)
+        draw.text((weather_icon_x, weather_icon_y), f"Image {current_weather_icon} not found", font=normal)
     # Current Temperature
     current_temperature = str(int(round(current_weather["apparentTemperature"])))
     draw.text((current_temperature_x, current_temperature_y), f"{current_temperature}°", font=large)
     # Weather summary
     draw.text((summary_x, summary_y),  weather_data["hourly"]["summary"], font=normal)
 
-
+    print("Clearing screen")
+    epd.Clear()
     # Display the buffer to the eink screen
     print("Displaying image")
     epd.display(epd.getbuffer(Himage))
