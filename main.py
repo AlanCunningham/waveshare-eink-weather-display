@@ -60,15 +60,19 @@ def main():
     todays_date_y = 50
     weather_icon_x = int(max_right / 2)
     weather_icon_y = 115
-    current_temperature_x = max_right - 100
-    current_temperature_y = 120
-    rain_chance_x = max_left + 30
-    rain_chance_y = 120
+    umbrella_icon_x = max_left + 50
+    umbrella_icon_y = 200
+    rain_chance_x = umbrella_icon_x + 80
+    rain_chance_y = 200
+    current_temperature_icon_x = max_right - 180
+    current_temperature_icon_y = umbrella_icon_y
+    current_temperature_x = current_temperature_icon_x + 70
+    current_temperature_y = rain_chance_y
     # Summary
     summary_x = left_column_x
     summary_y = 220
     # Temperature graph
-    temperature_graph_x = 400
+    temperature_graph_x = 420
     temperature_graph_y = 260
     rain_graph_x = 60
     rain_graph_y = 260
@@ -109,6 +113,13 @@ def main():
     Himage.paste(temperature_graph, (temperature_graph_x, temperature_graph_y))
     Himage.paste(rain_graph, (rain_graph_x, rain_graph_y))
 
+    # Images
+    image_dir = "climacons"
+    umbrella_icon = Image.open(f"{image_dir}/umbrella.png")
+    Himage.paste(umbrella_icon, (umbrella_icon_x, umbrella_icon_y))
+    temperature_icon = Image.open(f"{image_dir}/temperature-50.png")
+    Himage.paste(temperature_icon, (current_temperature_icon_x, current_temperature_icon_y))
+
     # Today's date
     now = datetime.now()
     todays_day_name = now.strftime("%A")
@@ -122,7 +133,6 @@ def main():
     draw.text((rain_chance_x, rain_chance_y), f"{rain_chance}%", font=large)
     # Weather icon
     # Convert 200x200 svg images to png, resized to around 100x100.
-    image_dir = "climacons"
     current_weather_icon = current_weather["icon"]
     try:
         weather_icon = Image.open(f"{image_dir}/{current_weather_icon}.png")
@@ -133,7 +143,7 @@ def main():
     current_temperature = str(int(round(current_weather["apparentTemperature"])))
     draw.text((current_temperature_x, current_temperature_y), f"{current_temperature}°", font=large)
     # Weather summary
-    draw.text((summary_x, summary_y),  weather_data["hourly"]["summary"], font=normal)
+    # draw.text((summary_x, summary_y),  weather_data["hourly"]["summary"], font=normal)
 
     print("Clearing screen")
     epd.Clear()
