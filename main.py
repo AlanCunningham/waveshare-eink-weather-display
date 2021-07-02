@@ -66,7 +66,7 @@ def main():
     rain_chance_y = 200
     current_temperature_icon_x = max_right - 180
     current_temperature_icon_y = umbrella_icon_y
-    current_temperature_x = current_temperature_icon_x + 70
+    current_temperature_x = current_temperature_icon_x + 65
     current_temperature_y = rain_chance_y
     # Summary
     summary_x = left_column_x
