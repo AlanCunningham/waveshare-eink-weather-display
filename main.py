@@ -115,6 +115,11 @@ def main():
 
     # Images
     image_dir = "climacons"
+    # If chance of rain is 100%, shift the icon and text over to the left slightly
+    rain_chance = int(current_weather["precipProbability"] * 100)
+    if rain_chance == 100:
+        umbrella_icon_x = max_left + 40
+        rain_chance_x = umbrella_icon_x + 70
     umbrella_icon = Image.open(f"{image_dir}/umbrella.png")
     Himage.paste(umbrella_icon, (umbrella_icon_x, umbrella_icon_y))
     temperature_icon = Image.open(f"{image_dir}/temperature-50.png")
@@ -128,7 +133,7 @@ def main():
     draw_underlined_text(draw, (todays_date_x, todays_date_y), todays_date, font=normal, width=4)
     # draw.text((todays_date_x, todays_date_y), todays_date, font=normal)
     # Chance of rain
-    rain_chance = current_weather["precipProbability"] * 100
+    rain_chance = int(round(current_weather["precipProbability"] * 100))
     print(f"Rain chance: {current_weather['precipProbability']}")
     draw.text((rain_chance_x, rain_chance_y), f"{rain_chance}%", font=large)
     # Weather icon
