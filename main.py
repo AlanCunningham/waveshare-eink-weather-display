@@ -103,7 +103,7 @@ def main():
     plt.grid()
     plt.ylim(0, 100)
     plt.plot(hour_list, rain_chance_list, linewidth=3.0)
-    plt.plot(hour_list, cloud_cover_list, marker=".")
+    plt.plot(hour_list, cloud_cover_list, linestyle="--", linewidth=2.0)
     plt.savefig("rain_graph.png")
 
     plt.figure(figsize=(graphs_width, graphs_height))
