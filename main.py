@@ -58,7 +58,7 @@ def main():
     todays_day_name_y = 50
     todays_date_x = 90
     todays_date_y = 50
-    weather_icon_x = int(max_right / 2)
+    weather_icon_x = int(max_right / 2) + 20
     weather_icon_y = 115
     umbrella_icon_x = max_left + 50
     umbrella_icon_y = 200
