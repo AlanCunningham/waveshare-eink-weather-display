@@ -92,7 +92,7 @@ def main():
     for index, hour in enumerate(hourly_weather):
         if index == number_of_hours:
             break
-        temperature_list.append(hour["apparentTemperature"])
+        temperature_list.append(hour["temperature"])
         converted_time = datetime.fromtimestamp(hour["time"]).strftime("%H")
         hour_list.append(converted_time)
         rain_chance_list.append(hour["precipProbability"] * 100)
@@ -148,7 +148,7 @@ def main():
     except Exception:
         draw.text((weather_icon_x, weather_icon_y), f"Image {current_weather_icon} not found", font=normal)
     # Current Temperature
-    current_temperature = str(int(round(current_weather["apparentTemperature"])))
+    current_temperature = str(int(round(current_weather["temperature"])))
     draw.text((current_temperature_x, current_temperature_y), f"{current_temperature}°", font=large)
     # Weather summary
     # draw.text((summary_x, summary_y),  weather_data["hourly"]["summary"], font=normal)
