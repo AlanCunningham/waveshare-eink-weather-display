@@ -1,6 +1,8 @@
-# E-ink photoframe weather display
+# E-ink Photoframe Weather Display
 
 A Dark Sky weather display for Waveshare's 7.5 inch e-ink display.  Displayed in a nice photoframe.
+
+![E-ink photograme weather display](/docs/weatherframe.png)
 
 ☔ **This project requires a Dark Sky developer account.  Dark Sky will be shutting down at some point and they aren't
 accepting new sign ups. When that happens, I'll probably port this project to another weather source.**
@@ -44,6 +46,8 @@ You should now be able to manually run the program and see the weather appear on
 ```
 (eink_display_venv) $ python main.py
 ```
+
+![E-ink photograme weather display updating](/docs/weather-update.gif)
 
 ## Automating it
 You can automate the weather updates by running the program in a cronjob.
