@@ -72,3 +72,4 @@ The display is split into the following sections:
 - On the right, the current temperature
 - The left graph shows both chance of rain (solid black line) and cloud cover (dotted line) as percentages over the next 12 hours
 - The right graph shows the temperature over the next 12 hours
+- Both graphs have the time in 24 hour format on the x axis - ie, 11, 12, 13 is 11:00, 12:00, 13:00 respectively
