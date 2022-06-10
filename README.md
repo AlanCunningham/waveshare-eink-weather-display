@@ -1,6 +1,8 @@
-# E-ink photoframe weather display
+# E-ink Photoframe Weather Display
 
 A Dark Sky weather display for Waveshare's 7.5 inch e-ink display.  Displayed in a nice photoframe.
+
+![E-ink photograme weather display](/docs/weatherframe.png)
 
 ☔ **This project requires a Dark Sky developer account.  Dark Sky will be shutting down at some point and they aren't
 accepting new sign ups. When that happens, I'll probably port this project to another weather source.**
@@ -45,6 +47,8 @@ You should now be able to manually run the program and see the weather appear on
 (eink_display_venv) $ python main.py
 ```
 
+![E-ink photograme weather display updating](/docs/weather-update.gif)
+
 ## Automating it
 You can automate the weather updates by running the program in a cronjob.
 
@@ -59,3 +63,12 @@ to this project and your python virtual environment that you created earlier:
 # m h dom mon dow  command
   0 *  *   *   *   cd /path/to/waveshare-eink-weather-display && /path/to/virtual_environment/bin/python main.py 
 ```
+
+## Reading the display
+The display is split into the following sections:
+- Todays date
+- An icon summarising the weather
+- On the left, the chance of rain as a percentage for the current hour
+- On the right, the current temperature
+- The left graph shows both chance of rain (solid black line) and cloud cover (dotted line) over the next 12 hours
+- The right graph shows the temperature over the next 12 hours
