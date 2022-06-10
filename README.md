@@ -63,3 +63,12 @@ to this project and your python virtual environment that you created earlier:
 # m h dom mon dow  command
   0 *  *   *   *   cd /path/to/waveshare-eink-weather-display && /path/to/virtual_environment/bin/python main.py 
 ```
+
+## Reading the display
+The display is split into the following sections:
+- Todays date
+- An icon summarising the weather
+- On the left, the chance of rain as a percentage for the current hour
+- On the right, the current temperature
+- The left graph shows both chance of rain (solid black line) and cloud cover (dotted line) over the next 12 hours
+- The right graph shows the temperature over the next 12 hours
