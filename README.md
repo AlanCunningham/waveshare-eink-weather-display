@@ -42,7 +42,7 @@ us: Imperial units (the default)
 si: SI units
 ```
 
-You should now be able to manually run the program and see the weather appear on your eink display
+You should now be able to manually run the program and see the weather appear on your eink display.  It'll take a few seconds to update.
 ```
 (eink_display_venv) $ python main.py
 ```
