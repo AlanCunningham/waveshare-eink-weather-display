@@ -3,7 +3,7 @@ import epd7in5_V2
 import requests
 import time
 from datetime import datetime
-from PIL import Image,ImageDraw,ImageFont
+from PIL import Image, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
@@ -18,9 +18,7 @@ def get_weather():
     weather_endpoint = settings.endpoint
     api_key = settings.api_key
     request_url = f"{weather_endpoint}/{api_key}/{latitude},{longitude}"
-    payload = {
-        "units": settings.units
-    }
+    payload = {"units": settings.units}
     weather_data = requests.get(request_url, params=payload)
     return weather_data
 
@@ -125,14 +123,18 @@ def main():
     umbrella_icon = Image.open(f"{image_dir}/umbrella.png")
     Himage.paste(umbrella_icon, (umbrella_icon_x, umbrella_icon_y))
     temperature_icon = Image.open(f"{image_dir}/temperature-50.png")
-    Himage.paste(temperature_icon, (current_temperature_icon_x, current_temperature_icon_y))
+    Himage.paste(
+        temperature_icon, (current_temperature_icon_x, current_temperature_icon_y)
+    )
 
     # Today's date
     now = datetime.now()
     todays_day_name = now.strftime("%A")
     todays_date = now.strftime("%A %d %B")
     # draw.text((todays_day_name_x, todays_day_name_y), todays_day_name, font=normal)
-    draw_underlined_text(draw, (todays_date_x, todays_date_y), todays_date, font=normal, width=4)
+    draw_underlined_text(
+        draw, (todays_date_x, todays_date_y), todays_date, font=normal, width=4
+    )
     # draw.text((todays_date_x, todays_date_y), todays_date, font=normal)
     # Chance of rain
     rain_chance = int(round(hourly_weather[0]["precipProbability"] * 100))
@@ -144,10 +146,18 @@ def main():
         weather_icon = Image.open(f"{image_dir}/{current_weather_icon}.png")
         Himage.paste(weather_icon, (weather_icon_x, weather_icon_y))
     except Exception:
-        draw.text((weather_icon_x, weather_icon_y), f"Image {current_weather_icon} not found", font=normal)
+        draw.text(
+            (weather_icon_x, weather_icon_y),
+            f"Image {current_weather_icon} not found",
+            font=normal,
+        )
     # Current Temperature
     current_temperature = str(int(round(hourly_weather[0]["temperature"])))
-    draw.text((current_temperature_x, current_temperature_y), f"{current_temperature}°", font=large)
+    draw.text(
+        (current_temperature_x, current_temperature_y),
+        f"{current_temperature}°",
+        font=large,
+    )
     # Weather summary
     # draw.text((summary_x, summary_y),  weather_data["hourly"]["summary"], font=normal)
 
