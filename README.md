@@ -70,5 +70,5 @@ The display is split into the following sections:
 - An icon summarising the weather
 - On the left, the chance of rain as a percentage for the current hour
 - On the right, the current temperature
-- The left graph shows both chance of rain (solid black line) and cloud cover (dotted line) over the next 12 hours
+- The left graph shows both chance of rain (solid black line) and cloud cover (dotted line) as percentages over the next 12 hours
 - The right graph shows the temperature over the next 12 hours
