@@ -1,5 +1,6 @@
 # Weather API settings
-endpoint = "https://api.darksky.net/forecast"
+endpoint = "https://api.pirateweather.net/forecast"
+
 latitude = ""
 longitude = ""
 units = "uk2"
