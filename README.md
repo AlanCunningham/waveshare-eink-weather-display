@@ -4,7 +4,7 @@ A ~Dark Sky~ [Pirate Weather](https://docs.pirateweather.net/en/latest/) display
 
 ![E-ink photograme weather display](/docs/weatherframe.png)
 
-☔ **This project requires a [Pirate Weather](https://docs.pirateweather.net/en/latest/) developer account.
+☔ **This project requires a [Pirate Weather](https://docs.pirateweather.net/en/latest/) developer account.**
 
 ## Features:
 - Shows current and hourly Pirate Weather weather on Waveshare's 7.5 inch e-ink display, intended to be refreshed once or twice an hour 
