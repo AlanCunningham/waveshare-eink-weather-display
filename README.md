@@ -1,14 +1,13 @@
 # E-ink Photoframe Weather Display
 
-A Dark Sky weather display for Waveshare's 7.5 inch e-ink display.  Displayed in a nice photoframe.
+A ~Dark Sky~ [Pirate Weather](https://docs.pirateweather.net/en/latest/) display for Waveshare's 7.5 inch e-ink display.  Displayed in a nice photoframe.
 
 ![E-ink photograme weather display](/docs/weatherframe.png)
 
-☔ **This project requires a Dark Sky developer account.  Dark Sky will be shutting down at some point and they aren't
-accepting new sign ups. When that happens, I'll probably port this project to another weather source.**
+☔ **This project requires a [Pirate Weather](https://docs.pirateweather.net/en/latest/) developer account.
 
 ## Features:
-- Shows current and hourly Dark Sky weather on Waveshare's 7.5 inch e-ink display, intended to be refreshed once or twice an hour 
+- Shows current and hourly Pirate Weather weather on Waveshare's 7.5 inch e-ink display, intended to be refreshed once or twice an hour 
 - Graphs that show the chance of rain, cloud cover, and temperature over the next 12 hours 
 - The current chance of rain and temperature
 - Weather icons from Adam Whitcroft’s excellent Climacons
@@ -30,7 +29,7 @@ $ source eink_display_venv/bin/activate
 - Open settings.py and enter your:
   - Latitude
   - Longitude
-  - Your Dark Sky API key
+  - Your Pirate Weather API key
   - Preferred units of measurement
 
 Units of measurement options, from https://darksky.net/dev/docs:
