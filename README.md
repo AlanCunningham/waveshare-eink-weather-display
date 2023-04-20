@@ -32,7 +32,7 @@ $ source eink_display_venv/bin/activate
   - Your Pirate Weather API key
   - Preferred units of measurement
 
-Units of measurement options, from https://darksky.net/dev/docs:
+Units of measurement options, from the old DarkSky docs:
 ``` 
 auto: automatically select units based on geographic location
 ca: same as si, except that windSpeed is in kilometers per hour
