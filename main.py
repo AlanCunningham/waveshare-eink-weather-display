@@ -13,6 +13,7 @@ def get_weather():
     Fetches the weather from an API.
     Returns weather information as json
     """
+    print("Getting weather")
     latitude = settings.latitude
     longitude = settings.longitude
     weather_endpoint = settings.endpoint
@@ -38,6 +39,7 @@ def draw_underlined_text(draw, pos, text, font, **options):
 def main():
     weather_data = get_weather().json()
     current_weather = weather_data["currently"]
+    print(current_weather)
     # Initialise and clear the e-ink screen
     print("Initialising screen")
     epd = epd7in5_V2.EPD()
@@ -84,6 +86,7 @@ def main():
     hourly_weather = weather_data["hourly"]["data"]
     number_of_hours = 12
     temperature_list = []
+    apparent_temperature_list = []
     hour_list = []
     rain_chance_list = []
     cloud_cover_list = []
@@ -91,6 +94,7 @@ def main():
         if index == number_of_hours:
             break
         temperature_list.append(hour["temperature"])
+        apparent_temperature_list.append(hour["apparentTemperature"])
         converted_time = datetime.fromtimestamp(hour["time"]).strftime("%H")
         hour_list.append(converted_time)
         rain_chance_list.append(hour["precipProbability"] * 100)
@@ -106,6 +110,7 @@ def main():
     plt.figure(figsize=(graphs_width, graphs_height))
     plt.grid()
     plt.plot(hour_list, temperature_list, linewidth=3.0)
+    plt.plot(hour_list, apparent_temperature_list, linestyle="--", linewidth=2.0)
     plt.savefig("temperature_graph.png")
 
     temperature_graph = Image.open("temperature_graph.png")
